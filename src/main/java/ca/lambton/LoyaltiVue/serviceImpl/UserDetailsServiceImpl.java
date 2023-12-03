@@ -33,6 +33,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	@Override
 	   public String registerUser(RegisterPayload register) {
        
+		UserDetails user = userRepo.findByPhoneNum(register.getPhoneNum());
+		if(user != null) {
+			return "The user with given phone number is already registered!";
+		}
         UserDetails newUser = new UserDetails();
         newUser.setPhoneNum(register.getPhoneNum());
         newUser.setPassword(register.getPassword());
@@ -41,16 +45,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         newUser.setLastName(register.getLastName());
         newUser.setLatestPoints(register.getLatestPoints());
 
-        UserDetails savedUser = userRepo.save(newUser);
+        userRepo.save(newUser);
 
-//        return UserDetailsDto.builder()
-//                .firstName(savedUser.getFirstName())
-//                .lastName(savedUser.getLastName())
-//                .password(savedUser.getPassword())
-//                .phoneNum(savedUser.getPhoneNum())
-//                .latestPoints(savedUser.getLatestPoints())
-//                .role(savedUser.getRole())
-//                .build();
         return "Successfully Registered";
     }
 
@@ -62,6 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 					 .firstName(userDetails.getFirstName())
 					 .lastName(userDetails.getLastName())
 					 .phoneNum(userDetails.getPhoneNum())
+					 .role(userDetails.getRole())
 					 .latestPoints(userDetails.getLatestPoints())
 					 .build();
 		}

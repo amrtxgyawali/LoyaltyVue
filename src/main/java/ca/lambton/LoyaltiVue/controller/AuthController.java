@@ -47,8 +47,8 @@ public class AuthController {
 	        }
 	}
 	
-	@GetMapping("/get-user-info")
-	public ResponseEntity<?> checkPoints(@PathVariable long phnNumber){
+	@GetMapping("/get-user-info/{phoneNum}")
+	public ResponseEntity<?> checkPoints(@PathVariable("phoneNum") long phnNumber){
 		try {
 			UserDetailsDto userDetails = userService.getUserDetails(phnNumber);
 			if(userDetails != null)
